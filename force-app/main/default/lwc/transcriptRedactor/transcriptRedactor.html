@@ -1,0 +1,240 @@
+<!--
+    @description HTML template for the Transcript Redactor Lightning Web Component
+    @author AI Assistant
+    @version 1.0
+-->
+<template>
+    <div class="transcript-redactor-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <h1 class="component-title">
+                <lightning-icon icon-name="utility:shield" size="small" class="title-icon"></lightning-icon>
+                PII Transcript Redactor & AI Analyzer
+            </h1>
+            <p class="component-description">
+                Redact sensitive information and generate AI insights from call transcripts
+            </p>
+        </div>
+
+        <!-- Sample Data Toggle -->
+        <div class="sample-toggle-section">
+            <lightning-button 
+                variant="base" 
+                label="Show Sample Data" 
+                onclick={handleToggleSamples}
+                class="sample-toggle-btn">
+            </lightning-button>
+        </div>
+
+        <!-- Sample Data Section -->
+        <div class={sampleClass}>
+            <div class="sample-header">
+                <h3>Sample Transcripts for Testing</h3>
+                <p>Click any sample to load it into the input area:</p>
+            </div>
+            <div class="sample-grid">
+                <template for:each={sampleTranscripts} for:index="index">
+                    <div key={index} class="sample-card">
+                        <h4>{item.name}</h4>
+                        <p class="sample-preview">{item.text}</p>
+                        <lightning-button 
+                            variant="brand" 
+                            label="Load Sample" 
+                            data-index={index}
+                            onclick={handleLoadSample}
+                            class="load-sample-btn">
+                        </lightning-button>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <div class="section-header">
+                <h2>Original Transcript</h2>
+                <div class="action-buttons">
+                    <lightning-button 
+                        variant="base" 
+                        label="Clear" 
+                        onclick={handleClear}
+                        class="clear-btn">
+                    </lightning-button>
+                </div>
+            </div>
+            
+            <div class="textarea-container">
+                <lightning-textarea
+                    name="originalText"
+                    label="Enter or paste your transcript text here:"
+                    value={originalText}
+                    onchange={handleOriginalTextChange}
+                    placeholder="Paste your call transcript here. The system will automatically redact emails, phone numbers, and credit card numbers."
+                    rows="8"
+                    class="transcript-textarea">
+                </lightning-textarea>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons-container">
+                <div class="button-group">
+                    <lightning-button 
+                        variant="brand" 
+                        label="Redact PII" 
+                        onclick={handleRedact}
+                        disabled={isLoading}
+                        class="redact-btn">
+                        <lightning-icon 
+                            icon-name="utility:shield" 
+                            size="x-small" 
+                            slot="prefix">
+                        </lightning-icon>
+                    </lightning-button>
+                    
+                    <lightning-button 
+                        variant="success" 
+                        label="Analyze with AI" 
+                        onclick={handleAnalyze}
+                        disabled={isLoading}
+                        class="analyze-btn">
+                        <lightning-icon 
+                            icon-name="utility:magicwand" 
+                            size="x-small" 
+                            slot="prefix">
+                        </lightning-icon>
+                    </lightning-button>
+                </div>
+                
+                <!-- Analysis Type Selector -->
+                <div class="analysis-type-container">
+                    <lightning-combobox
+                        name="analysisType"
+                        label="Analysis Type:"
+                        value={selectedAnalysisType}
+                        options={analysisTypeOptions}
+                        onchange={handleAnalysisTypeChange}
+                        class="analysis-type-selector">
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div if:true={isLoading} class="loading-container">
+                <lightning-spinner 
+                    alternative-text="Processing transcript..." 
+                    size="medium">
+                </lightning-spinner>
+                <p class="loading-text">Processing transcript...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div class={errorClass}>
+                <lightning-icon icon-name="utility:error" size="small" class="error-icon"></lightning-icon>
+                <span class="error-text">{errorMessage}</span>
+            </div>
+        </div>
+
+        <!-- Redacted Output Section -->
+        <div class={redactedTextClass}>
+            <div class="section-header">
+                <h2>Redacted Transcript</h2>
+                <div class="redaction-info">
+                    <lightning-icon icon-name="utility:shield" size="x-small" class="info-icon"></lightning-icon>
+                    <span class="info-text">PII has been redacted for security</span>
+                </div>
+            </div>
+            
+            <div class="redacted-text-container">
+                <div class="redacted-content">
+                    <pre class="redacted-text">{redactedText}</pre>
+                </div>
+                
+                <!-- Copy Button -->
+                <div class="copy-section">
+                    <lightning-button 
+                        variant="base" 
+                        label="Copy Redacted Text" 
+                        onclick={handleCopyRedacted}
+                        class="copy-btn">
+                        <lightning-icon 
+                            icon-name="utility:copy" 
+                            size="x-small" 
+                            slot="prefix">
+                        </lightning-icon>
+                    </lightning-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Analysis Section -->
+        <div class={analysisClass}>
+            <div class="section-header">
+                <h2>AI Analysis Results</h2>
+                <div class="analysis-info">
+                    <lightning-icon icon-name="utility:magicwand" size="x-small" class="info-icon"></lightning-icon>
+                    <span class="info-text">AI-generated insights from {analysisResult.analysisType} analysis</span>
+                </div>
+            </div>
+            
+            <div class="analysis-container">
+                <div class="analysis-content">
+                    <template if:true={analysisResult.aiInsights}>
+                        <div class="insights-section">
+                            <template for:each={analysisResult.aiInsights} for:key="key" for:item="value">
+                                <div key={key} class="insight-item">
+                                    <h4 class="insight-label">{key}</h4>
+                                    <div class="insight-value">
+                                        <template if:true={value}>
+                                            <template if:true={Array.isArray(value)}>
+                                                <ul class="insight-list">
+                                                    <template for:each={value} for:index="index">
+                                                        <li key={index}>{item}</li>
+                                                    </template>
+                                                </ul>
+                                            </template>
+                                            <template if:false={Array.isArray(value)}>
+                                                <span>{value}</span>
+                                            </template>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+                
+                <!-- Analysis Metadata -->
+                <div class="analysis-metadata">
+                    <div class="metadata-item">
+                        <strong>Analysis Type:</strong> {analysisResult.analysisType}
+                    </div>
+                    <div class="metadata-item">
+                        <strong>Timestamp:</strong> {analysisResult.timestamp}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer-section">
+            <div class="redaction-types">
+                <h4>Redaction Types:</h4>
+                <ul class="redaction-list">
+                    <li><strong>Emails:</strong> user@domain.com → [REDACTED EMAIL]</li>
+                    <li><strong>Phone Numbers:</strong> (555) 123-4567 → [REDACTED PHONE]</li>
+                    <li><strong>Credit Cards:</strong> 1234-5678-9012-3456 → [REDACTED CARD]</li>
+                </ul>
+            </div>
+            
+            <div class="ai-analysis-types">
+                <h4>AI Analysis Types:</h4>
+                <ul class="analysis-list">
+                    <li><strong>Summary:</strong> Concise overview of the call</li>
+                    <li><strong>Sentiment:</strong> Customer sentiment analysis</li>
+                    <li><strong>Coaching:</strong> Agent performance tips</li>
+                    <li><strong>Next Steps:</strong> Action items and follow-ups</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</template> 
