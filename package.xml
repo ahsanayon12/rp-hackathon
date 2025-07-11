@@ -5,10 +5,16 @@
         <members>TranscriptRedactionServiceTest</members>
         <members>OpenAITranscriptAnalyzer</members>
         <members>OpenAITranscriptAnalyzerTest</members>
+        <members>AIEnhancedRedactionService</members>
+        <members>DeepLearningRedactionService</members>
+        <members>AIModelConfigurationService</members>
+        <members>RocketphoneRedactionService</members>
+        <members>RocketphoneCallTrigger</members>
         <name>ApexClass</name>
     </types>
     <types>
         <members>transcriptRedactor</members>
+        <members>rocketphoneTranscriptRedactor</members>
         <name>LightningComponentBundle</name>
     </types>
     <version>58.0</version>

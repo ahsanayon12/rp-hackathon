@@ -1,283 +1,279 @@
-# Salesforce Transcript Redactor & AI Analyzer
+# AI-Powered Transcript Redaction System
 
-A secure Salesforce Lightning Web Component that redacts PII (Personally Identifiable Information) from call transcripts and generates AI insights using OpenAI's GPT API.
+A comprehensive Salesforce solution for intelligent redaction of Personally Identifiable Information (PII) from call transcripts using advanced AI and deep learning models.
 
-## Features
+## 🚀 Features
 
-### 🔒 PII Redaction
-- **Email Addresses**: `user@domain.com` → `[REDACTED EMAIL]`
-- **Phone Numbers**: `(555) 123-4567` → `[REDACTED PHONE]`
-- **Credit Card Numbers**: `1234-5678-9012-3456` → `[REDACTED CARD]`
+### Core Redaction Capabilities
+- **Basic Regex Redaction**: Fast pattern-based redaction for emails, phone numbers, and credit cards
+- **Enhanced AI Redaction**: Multi-model AI-powered entity recognition and redaction
+- **Deep Learning Redaction**: Advanced ML models with ensemble voting for maximum accuracy
+- **Context-Aware Processing**: Intelligent redaction based on context and confidence scores
 
-### 🤖 AI Analysis
-- **Summary**: Concise overview of the call
-- **Sentiment Analysis**: Customer sentiment throughout the call
-- **Coaching Tips**: Agent performance recommendations
-- **Next Steps**: Action items and follow-ups
+### AI/ML Integration
+- **OpenAI GPT-4 Integration**: Advanced language model for PII detection
+- **BERT Model Support**: Named Entity Recognition (NER) for accurate entity detection
+- **Azure Cognitive Services**: Enterprise-grade entity recognition
+- **AWS Comprehend**: Cloud-based ML for additional validation
+- **Ensemble Voting**: Combines multiple models for improved accuracy
 
-### 🛡️ Security Features
-- PII is automatically redacted before sending to OpenAI
-- Secure API calls using Salesforce Named Credentials
-- Comprehensive error handling and logging
-- Token limit management to prevent API failures
+### Analysis Capabilities
+- **Sentiment Analysis**: Customer sentiment throughout calls
+- **Coaching Insights**: Agent performance improvement suggestions
+- **Next Steps Identification**: Action items and follow-up recommendations
+- **Summary Generation**: Concise call summaries
 
-## Setup Instructions
+### Model Configuration
+- **Dynamic Model Selection**: Automatic model selection based on use case
+- **Performance Optimization**: Cost and time estimation for different models
+- **Confidence Scoring**: Quality metrics for redaction accuracy
+- **Multi-Provider Support**: OpenAI, Azure, AWS, HuggingFace integration
 
-### 1. Named Credential Configuration
+## 🏗️ Architecture
 
-Create a Named Credential in Salesforce Setup:
+### Backend Services
 
-1. Go to **Setup** → **Security** → **Named Credentials**
-2. Click **New Named Credential**
-3. Configure as follows:
-   - **Label**: `OpenAI_API`
-   - **Name**: `OpenAI_API`
-   - **URL**: `https://api.openai.com`
-   - **Identity Type**: `Named Principal`
-   - **Authentication Protocol**: `OAuth 2.0`
-   - **Authentication Provider**: Create a new Auth Provider for OpenAI
-   - **Scope**: `openai`
-   - **Authentication Status**: `Authenticated`
+#### 1. TranscriptRedactionService.cls
+- Basic regex-based redaction
+- Fast processing for simple PII patterns
+- Foundation for more advanced redaction
 
-### 2. Authentication Provider Setup
+#### 2. AIEnhancedRedactionService.cls
+- Multi-AI model integration
+- Confidence-based redaction
+- Entity detection with multiple providers
+- Context-aware processing
 
-1. Go to **Setup** → **Security** → **Auth. Providers**
-2. Click **New**
-3. Configure as follows:
-   - **Provider Type**: `OpenAI`
-   - **Name**: `OpenAI`
-   - **Client ID**: Your OpenAI API key
-   - **Client Secret**: Leave blank (not required for API key auth)
-   - **Authorize Endpoint URL**: `https://api.openai.com/v1/auth`
-   - **Token Endpoint URL**: `https://api.openai.com/v1/token`
+#### 3. DeepLearningRedactionService.cls
+- Advanced ML model ensemble
+- BERT, GPT, and AWS Comprehend integration
+- Ensemble voting for improved accuracy
+- Performance metrics and confidence scoring
 
-### 3. Deploy Components
+#### 4. AIModelConfigurationService.cls
+- Dynamic model selection
+- Performance and cost estimation
+- Use case optimization
+- Model configuration management
 
-Deploy the following components to your Salesforce org:
+#### 5. OpenAITranscriptAnalyzer.cls
+- AI-powered transcript analysis
+- Sentiment analysis and coaching insights
+- Summary generation
+- Action item identification
 
-#### Apex Classes
-- `TranscriptRedactionService.cls` - PII redaction service
-- `OpenAITranscriptAnalyzer.cls` - OpenAI integration service
-- `TranscriptRedactionServiceTest.cls` - Test class for redaction service
-- `OpenAITranscriptAnalyzerTest.cls` - Test class for OpenAI service
+### Frontend Components
 
-#### Lightning Web Components
-- `transcriptRedactor/` - Main LWC component with UI
+#### transcriptRedactor LWC
+- Modern, responsive UI
+- Real-time processing feedback
+- Multiple redaction modes
+- Performance metrics display
+- Sample data for testing
 
-### 4. API Key Configuration
+## 🤖 AI Models Supported
 
-**Important**: Never hardcode API keys in Apex code. Use Named Credentials instead.
+### Language Models
+- **GPT-4**: Advanced language understanding and PII detection
+- **GPT-3.5-turbo**: Fast processing with good accuracy
+- **BERT-large-cased**: Named Entity Recognition
+- **DistilBERT**: Lightweight, fast NER model
+- **RoBERTa**: Robust language model for sentiment analysis
 
-For testing purposes, you can temporarily modify the `OpenAITranscriptAnalyzer.cls` to use a custom setting or environment variable for the API key, but this is not recommended for production.
+### Cloud Services
+- **Azure Cognitive Services**: Enterprise entity recognition
+- **AWS Comprehend**: Cloud-based ML processing
+- **HuggingFace Models**: Open-source model integration
 
-## Usage
+### Ensemble Strategies
+- **High Accuracy**: Multiple models with strict confidence thresholds
+- **Fast Processing**: Optimized for speed with single models
+- **Cost Effective**: Balanced approach for budget constraints
+- **Comprehensive**: Full ensemble with all available models
 
-### Basic Redaction
-1. Paste your call transcript into the input area
-2. Click **"Redact PII"** to remove sensitive information
-3. Copy the redacted transcript for safe storage
+## 📊 Performance Metrics
 
-### AI Analysis
-1. Paste your call transcript into the input area
-2. Select an analysis type from the dropdown:
-   - **Summary**: Get a concise overview
-   - **Sentiment**: Analyze customer sentiment
-   - **Coaching**: Get agent performance tips
-   - **Next Steps**: Identify action items
-3. Click **"Analyze with AI"**
-4. Review the AI-generated insights
+### Accuracy Metrics
+- **Entity Detection Rate**: Percentage of PII correctly identified
+- **False Positive Rate**: Incorrect redactions
+- **Confidence Scores**: Model confidence for each detection
+- **Ensemble Agreement**: Multiple model consensus
 
-## Sample Prompts
+### Processing Metrics
+- **Processing Time**: Real-time performance tracking
+- **Cost Estimation**: API usage cost calculation
+- **Model Efficiency**: Tokens and API calls optimization
+- **Scalability**: Performance with large transcripts
 
-The system uses the following prompt templates for different analysis types:
+## 🔧 Setup and Configuration
 
-### Summary
-```
-Analyze the following customer service call transcript and provide insights. 
-The transcript has been redacted for privacy. 
-Provide your response in JSON format with the specified fields.
+### Prerequisites
+- Salesforce org with API access
+- Named credentials for AI services:
+  - `OpenAI_API`
+  - `Azure_Cognitive_Services`
+  - `AWS_Comprehend`
+  - `HuggingFace_API`
 
-Transcript:
-[REDACTED TRANSCRIPT]
+### Installation
+1. Deploy the package to your Salesforce org
+2. Configure named credentials for AI services
+3. Set up remote site settings for external APIs
+4. Assign appropriate permissions to users
 
-Provide a concise summary (2-3 sentences) of the call in JSON format: {"summary": "call summary here"}
-```
-
-### Sentiment
-```
-Analyze the following customer service call transcript and provide insights. 
-The transcript has been redacted for privacy. 
-Provide your response in JSON format with the specified fields.
-
-Transcript:
-[REDACTED TRANSCRIPT]
-
-Analyze the customer sentiment throughout the call in JSON format: {"overall_sentiment": "positive/negative/neutral", "sentiment_details": "explanation of sentiment changes"}
-```
-
-### Coaching
-```
-Analyze the following customer service call transcript and provide insights. 
-The transcript has been redacted for privacy. 
-Provide your response in JSON format with the specified fields.
-
-Transcript:
-[REDACTED TRANSCRIPT]
-
-Provide coaching tips for the agent in JSON format: {"coaching_tips": ["tip1", "tip2", "tip3"], "overall_performance": "positive/needs_improvement"}
-```
-
-### Next Steps
-```
-Analyze the following customer service call transcript and provide insights. 
-The transcript has been redacted for privacy. 
-Provide your response in JSON format with the specified fields.
-
-Transcript:
-[REDACTED TRANSCRIPT]
-
-Identify next steps and action items in JSON format: {"next_steps": ["step1", "step2"], "priority": "high/medium/low", "estimated_completion": "timeframe"}
+### Configuration
+```xml
+<!-- Named Credential Example -->
+<NamedCredential>
+    <label>OpenAI API</label>
+    <namedCredentialType>Password</namedCredentialType>
+    <endpoint>https://api.openai.com</endpoint>
+    <generateAuthorizationHeader>true</generateAuthorizationHeader>
+    <label>OpenAI_API</label>
+</NamedCredential>
 ```
 
-## Example Responses
+## 🎯 Use Cases
 
-### Summary Response
-```json
-{
-  "summary": "Customer called to update their payment method and confirm order details. Agent successfully processed the payment update and provided order confirmation. Call was resolved satisfactorily."
-}
+### Customer Service
+- **Call Center Redaction**: Secure processing of customer calls
+- **Quality Assurance**: Automated PII detection for compliance
+- **Agent Training**: Redacted transcripts for training purposes
+
+### Healthcare
+- **HIPAA Compliance**: Patient information redaction
+- **Medical Records**: Secure transcript processing
+- **Telemedicine**: Protected health information handling
+
+### Financial Services
+- **PCI Compliance**: Credit card information protection
+- **Account Security**: Financial data redaction
+- **Regulatory Compliance**: Automated compliance processing
+
+### Legal Services
+- **Attorney-Client Privilege**: Confidential information protection
+- **Court Proceedings**: Secure transcript processing
+- **Document Review**: Automated PII detection
+
+## 🔒 Security Features
+
+### Data Protection
+- **No Data Storage**: Transcripts processed in memory only
+- **Secure APIs**: Encrypted communication with AI services
+- **Access Control**: Role-based permissions
+- **Audit Trail**: Processing logs and metrics
+
+### Compliance
+- **GDPR Ready**: Data protection compliance
+- **HIPAA Compatible**: Healthcare information protection
+- **PCI DSS**: Payment card industry standards
+- **SOC 2**: Security and availability controls
+
+## 📈 Performance Optimization
+
+### Model Selection
+- **Text Length**: Automatic model selection based on transcript size
+- **Use Case**: Optimized models for specific requirements
+- **Cost Constraints**: Budget-aware model selection
+- **Performance Requirements**: Speed vs. accuracy trade-offs
+
+### Caching Strategy
+- **Result Caching**: Store processed results for efficiency
+- **Model Caching**: Cache model configurations
+- **API Optimization**: Minimize external API calls
+- **Batch Processing**: Efficient handling of multiple transcripts
+
+## 🧪 Testing
+
+### Sample Data
+The system includes comprehensive sample transcripts for testing:
+- Customer service calls with PII
+- Sales conversations with sensitive data
+- Technical support with account information
+
+### Test Coverage
+- Unit tests for all Apex classes
+- Integration tests for AI services
+- Performance benchmarks
+- Security validation tests
+
+## 🚀 Deployment
+
+### Package Deployment
+```bash
+# Deploy to sandbox
+sfdx force:source:deploy -p . -u your-org-alias
+
+# Deploy to production
+sfdx force:source:deploy -p . -u your-prod-org-alias
 ```
 
-### Sentiment Response
-```json
-{
-  "overall_sentiment": "positive",
-  "sentiment_details": "Customer started with slight frustration but became satisfied after agent resolved their payment issue efficiently."
-}
-```
+### Post-Deployment Steps
+1. Configure named credentials
+2. Set up remote site settings
+3. Assign user permissions
+4. Test with sample data
+5. Monitor performance metrics
 
-### Coaching Response
-```json
-{
-  "coaching_tips": [
-    "Excellent active listening skills",
-    "Could improve by offering additional services proactively",
-    "Good problem resolution time"
-  ],
-  "overall_performance": "positive"
-}
-```
+## 📊 Monitoring and Analytics
 
-### Next Steps Response
-```json
-{
-  "next_steps": [
-    "Send confirmation email to customer",
-    "Update customer profile with new payment method",
-    "Follow up in 24 hours to ensure satisfaction"
-  ],
-  "priority": "medium",
-  "estimated_completion": "24 hours"
-}
-```
+### Performance Dashboard
+- Real-time processing metrics
+- Model accuracy tracking
+- Cost analysis and optimization
+- Error rate monitoring
 
-## Security Considerations
+### Logging and Debugging
+- Comprehensive error logging
+- Processing time tracking
+- Model confidence scoring
+- API response monitoring
 
-### PII Protection
-- All transcripts are automatically redacted before sending to OpenAI
-- No PII is ever transmitted to external APIs
-- Redaction patterns are comprehensive and regularly updated
+## 🔮 Future Enhancements
 
-### API Security
-- Uses Salesforce Named Credentials for secure API calls
-- API keys are never exposed in client-side code
-- All API calls are logged for audit purposes
+### Planned Features
+- **Custom Model Training**: Organization-specific model fine-tuning
+- **Real-time Processing**: Live transcript redaction
+- **Advanced Analytics**: Deep insights and reporting
+- **Multi-language Support**: International language processing
+- **Voice Integration**: Direct audio processing
 
-### Error Handling
-- Comprehensive exception handling prevents system crashes
-- Failed API calls don't affect the redaction functionality
-- Detailed error messages help with troubleshooting
+### AI Model Improvements
+- **Custom Entity Types**: Organization-specific PII patterns
+- **Context Learning**: Improved accuracy through usage
+- **Adaptive Thresholds**: Dynamic confidence scoring
+- **Model Versioning**: A/B testing for model improvements
 
-## Configuration Options
+## 🤝 Contributing
 
-### Token Limits
-The system automatically manages OpenAI token limits:
-- **Input Limit**: 3,000 tokens (≈12,000 characters)
-- **Response Limit**: 1,000 tokens
-- **Model**: GPT-3.5-turbo (configurable)
+### Development Guidelines
+- Follow Salesforce best practices
+- Maintain comprehensive test coverage
+- Document all new features
+- Follow security guidelines
 
-### Timeout Settings
-- **API Timeout**: 30 seconds
-- **Retry Logic**: Built-in error handling with fallback responses
+### Code Standards
+- Apex: Salesforce coding standards
+- JavaScript: ES6+ with LWC best practices
+- CSS: SLDS design system compliance
+- Documentation: Comprehensive inline comments
 
-## Troubleshooting
+## 📞 Support
 
-### Common Issues
+### Documentation
+- [Salesforce Developer Documentation](https://developer.salesforce.com/)
+- [Lightning Web Components Guide](https://developer.salesforce.com/docs/component-library/)
+- [Apex Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/)
 
-1. **Named Credential Not Found**
-   - Ensure the Named Credential is properly configured
-   - Check that the name matches exactly: `OpenAI_API`
+### Community Resources
+- [Salesforce Stack Exchange](https://salesforce.stackexchange.com/)
+- [Trailhead](https://trailhead.salesforce.com/)
+- [Salesforce Developer Blog](https://developer.salesforce.com/blogs/)
 
-2. **API Authentication Errors**
-   - Verify your OpenAI API key is valid
-   - Check that the API key has sufficient credits
-
-3. **Token Limit Exceeded**
-   - The system automatically truncates long transcripts
-   - Consider breaking very long calls into smaller segments
-
-4. **JSON Parsing Errors**
-   - The system includes fallback parsing for malformed responses
-   - Check the debug logs for detailed error information
-
-### Debug Information
-Enable debug logs in Salesforce Setup to monitor:
-- API call success/failure rates
-- Token usage statistics
-- Redaction effectiveness
-- Error patterns
-
-## Development
-
-### Adding New Redaction Patterns
-Edit `TranscriptRedactionService.cls` to add new regex patterns:
-
-```apex
-private static String redactNewPattern(String text) {
-    String pattern = 'your-regex-pattern';
-    return text.replaceAll(pattern, '[REDACTED TYPE]');
-}
-```
-
-### Adding New Analysis Types
-Edit `OpenAITranscriptAnalyzer.cls` to add new analysis types:
-
-```apex
-when 'new_type' {
-    return basePrompt + 'Your custom prompt here';
-}
-```
-
-### Customizing Prompts
-Modify the `generatePrompt()` method to customize AI prompts for your specific use case.
-
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Support
+---
 
-For issues or questions:
-1. Check the debug logs in Salesforce Setup
-2. Review the error messages in the component
-3. Verify your OpenAI API configuration
-4. Test with the sample data provided
-
-## Changelog
-
-### Version 1.0
-- Initial release with PII redaction
-- OpenAI GPT integration
-- Four analysis types (summary, sentiment, coaching, next steps)
-- Secure API handling with Named Credentials
-- Comprehensive error handling and logging 
+**Built with ❤️ for secure, intelligent transcript processing** 

@@ -4,237 +4,366 @@
     @version 1.0
 -->
 <template>
-    <div class="transcript-redactor-container">
-        <!-- Header Section -->
-        <div class="header-section">
-            <h1 class="component-title">
-                <lightning-icon icon-name="utility:shield" size="small" class="title-icon"></lightning-icon>
-                PII Transcript Redactor & AI Analyzer
-            </h1>
-            <p class="component-description">
-                Redact sensitive information and generate AI insights from call transcripts
-            </p>
-        </div>
-
-        <!-- Sample Data Toggle -->
-        <div class="sample-toggle-section">
-            <lightning-button 
-                variant="base" 
-                label="Show Sample Data" 
-                onclick={handleToggleSamples}
-                class="sample-toggle-btn">
-            </lightning-button>
-        </div>
-
-        <!-- Sample Data Section -->
-        <div class={sampleClass}>
-            <div class="sample-header">
-                <h3>Sample Transcripts for Testing</h3>
-                <p>Click any sample to load it into the input area:</p>
-            </div>
-            <div class="sample-grid">
-                <template for:each={sampleTranscripts} for:index="index">
-                    <div key={index} class="sample-card">
-                        <h4>{item.name}</h4>
-                        <p class="sample-preview">{item.text}</p>
-                        <lightning-button 
-                            variant="brand" 
-                            label="Load Sample" 
-                            data-index={index}
-                            onclick={handleLoadSample}
-                            class="load-sample-btn">
-                        </lightning-button>
-                    </div>
-                </template>
-            </div>
-        </div>
-
-        <!-- Input Section -->
-        <div class="input-section">
-            <div class="section-header">
-                <h2>Original Transcript</h2>
-                <div class="action-buttons">
-                    <lightning-button 
-                        variant="base" 
-                        label="Clear" 
-                        onclick={handleClear}
-                        class="clear-btn">
-                    </lightning-button>
-                </div>
-            </div>
+    <lightning-card title="AI-Powered Transcript Redactor" icon-name="utility:shield">
+        <div class="slds-p-around_medium">
             
-            <div class="textarea-container">
+            <!-- Input Section -->
+            <div class="input-section">
                 <lightning-textarea
                     name="originalText"
-                    label="Enter or paste your transcript text here:"
+                    label="Original Transcript"
+                    placeholder="Paste your call transcript here..."
                     value={originalText}
                     onchange={handleOriginalTextChange}
-                    placeholder="Paste your call transcript here. The system will automatically redact emails, phone numbers, and credit card numbers."
                     rows="8"
-                    class="transcript-textarea">
+                    class="transcript-input">
                 </lightning-textarea>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="action-buttons-container">
-                <div class="button-group">
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons slds-m-top_medium">
                     <lightning-button 
+                        label="Basic Redact" 
                         variant="brand" 
-                        label="Redact PII" 
                         onclick={handleRedact}
-                        disabled={isLoading}
-                        class="redact-btn">
-                        <lightning-icon 
-                            icon-name="utility:shield" 
-                            size="x-small" 
-                            slot="prefix">
-                        </lightning-icon>
+                        disabled={isLoading}>
                     </lightning-button>
                     
                     <lightning-button 
+                        label="Enhanced AI Redact" 
                         variant="success" 
-                        label="Analyze with AI" 
-                        onclick={handleAnalyze}
-                        disabled={isLoading}
-                        class="analyze-btn">
-                        <lightning-icon 
-                            icon-name="utility:magicwand" 
-                            size="x-small" 
-                            slot="prefix">
-                        </lightning-icon>
+                        onclick={handleEnhancedRedact}
+                        disabled={isLoading}>
                     </lightning-button>
-                </div>
-                
-                <!-- Analysis Type Selector -->
-                <div class="analysis-type-container">
-                    <lightning-combobox
-                        name="analysisType"
-                        label="Analysis Type:"
-                        value={selectedAnalysisType}
-                        options={analysisTypeOptions}
-                        onchange={handleAnalysisTypeChange}
-                        class="analysis-type-selector">
-                    </lightning-combobox>
-                </div>
-            </div>
-
-            <!-- Loading Spinner -->
-            <div if:true={isLoading} class="loading-container">
-                <lightning-spinner 
-                    alternative-text="Processing transcript..." 
-                    size="medium">
-                </lightning-spinner>
-                <p class="loading-text">Processing transcript...</p>
-            </div>
-
-            <!-- Error Message -->
-            <div class={errorClass}>
-                <lightning-icon icon-name="utility:error" size="small" class="error-icon"></lightning-icon>
-                <span class="error-text">{errorMessage}</span>
-            </div>
-        </div>
-
-        <!-- Redacted Output Section -->
-        <div class={redactedTextClass}>
-            <div class="section-header">
-                <h2>Redacted Transcript</h2>
-                <div class="redaction-info">
-                    <lightning-icon icon-name="utility:shield" size="x-small" class="info-icon"></lightning-icon>
-                    <span class="info-text">PII has been redacted for security</span>
-                </div>
-            </div>
-            
-            <div class="redacted-text-container">
-                <div class="redacted-content">
-                    <pre class="redacted-text">{redactedText}</pre>
-                </div>
-                
-                <!-- Copy Button -->
-                <div class="copy-section">
+                    
                     <lightning-button 
-                        variant="base" 
-                        label="Copy Redacted Text" 
-                        onclick={handleCopyRedacted}
-                        class="copy-btn">
-                        <lightning-icon 
-                            icon-name="utility:copy" 
-                            size="x-small" 
-                            slot="prefix">
-                        </lightning-icon>
+                        label="Deep Learning Redact" 
+                        variant="destructive" 
+                        onclick={handleDeepLearningRedact}
+                        disabled={isLoading}>
+                    </lightning-button>
+                    
+                    <lightning-button 
+                        label="AI Analyze" 
+                        variant="neutral" 
+                        onclick={handleAnalyze}
+                        disabled={isLoading}>
+                    </lightning-button>
+                    
+                    <lightning-button 
+                        label="Get Model Config" 
+                        variant="brand-outline" 
+                        onclick={handleGetModelConfiguration}
+                        disabled={isLoading}>
+                    </lightning-button>
+                    
+                    <lightning-button 
+                        label="Clear All" 
+                        variant="neutral" 
+                        onclick={handleClear}>
                     </lightning-button>
                 </div>
-            </div>
-        </div>
-
-        <!-- AI Analysis Section -->
-        <div class={analysisClass}>
-            <div class="section-header">
-                <h2>AI Analysis Results</h2>
-                <div class="analysis-info">
-                    <lightning-icon icon-name="utility:magicwand" size="x-small" class="info-icon"></lightning-icon>
-                    <span class="info-text">AI-generated insights from {analysisResult.analysisType} analysis</span>
+                
+                <!-- Configuration Options -->
+                <div class="config-section slds-m-top_medium">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col">
+                            <lightning-combobox
+                                name="redactionLevel"
+                                label="Redaction Level"
+                                value={selectedRedactionLevel}
+                                options={redactionLevelOptions}
+                                onchange={handleRedactionLevelChange}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col">
+                            <lightning-combobox
+                                name="modelType"
+                                label="Model Type"
+                                value={selectedModelType}
+                                options={modelTypeOptions}
+                                onchange={handleModelTypeChange}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col">
+                            <lightning-combobox
+                                name="useCase"
+                                label="Use Case"
+                                value={selectedUseCase}
+                                options={useCaseOptions}
+                                onchange={handleUseCaseChange}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col">
+                            <lightning-combobox
+                                name="analysisType"
+                                label="Analysis Type"
+                                value={selectedAnalysisType}
+                                options={analysisTypeOptions}
+                                onchange={handleAnalysisTypeChange}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="analysis-container">
-                <div class="analysis-content">
-                    <template if:true={analysisResult.aiInsights}>
-                        <div class="insights-section">
-                            <template for:each={analysisResult.aiInsights} for:key="key" for:item="value">
-                                <div key={key} class="insight-item">
-                                    <h4 class="insight-label">{key}</h4>
-                                    <div class="insight-value">
-                                        <template if:true={value}>
-                                            <template if:true={Array.isArray(value)}>
-                                                <ul class="insight-list">
-                                                    <template for:each={value} for:index="index">
-                                                        <li key={index}>{item}</li>
-                                                    </template>
-                                                </ul>
-                                            </template>
-                                            <template if:false={Array.isArray(value)}>
-                                                <span>{value}</span>
-                                            </template>
+            <!-- Loading Spinner -->
+            <div if:true={isLoading} class="loading-section slds-m-top_medium">
+                <lightning-spinner alternative-text="Processing transcript..." size="medium"></lightning-spinner>
+                <p class="slds-text-align_center slds-m-top_small">Processing with {processingMetrics.modelUsed}...</p>
+            </div>
+            
+            <!-- Error Message -->
+            <div if:true={errorMessage} class={errorClass}>
+                <lightning-icon icon-name="utility:error" size="small" class="slds-m-right_x-small"></lightning-icon>
+                {errorMessage}
+            </div>
+            
+            <!-- Redacted Text Section -->
+            <div if:true={redactedText} class={redactedTextClass}>
+                <div class="slds-card slds-m-top_medium">
+                    <div class="slds-card__header">
+                        <h3 class="slds-card__header-title">
+                            <lightning-icon icon-name="utility:shield" size="small" class="slds-m-right_x-small"></lightning-icon>
+                            Redacted Transcript
+                        </h3>
+                        <div class="slds-card__header-actions">
+                            <lightning-button 
+                                label="Copy" 
+                                variant="neutral" 
+                                onclick={handleCopyRedacted}
+                                icon-name="utility:copy">
+                            </lightning-button>
+                        </div>
+                    </div>
+                    <div class="slds-card__body">
+                        <div class="redacted-text">
+                            <pre>{redactedText}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced Redaction Results -->
+            <div if:true={showEnhancedRedaction} class={enhancedRedactionClass}>
+                <div class="slds-card slds-m-top_medium">
+                    <div class="slds-card__header">
+                        <h3 class="slds-card__header-title">
+                            <lightning-icon icon-name="utility:ai" size="small" class="slds-m-right_x-small"></lightning-icon>
+                            Enhanced AI Redaction Results
+                        </h3>
+                    </div>
+                    <div class="slds-card__body">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col">
+                                <h4>Detected Entities</h4>
+                                <template if:true={enhancedRedactionResult.detectedEntities}>
+                                    <div class="entity-list">
+                                        <template for:each={enhancedRedactionResult.detectedEntities} for:item="entity">
+                                            <div key={entity.text} class="entity-item">
+                                                <span class="entity-text">{entity.text}</span>
+                                                <span class="entity-type">{entity.type}</span>
+                                                <span class="entity-confidence">{entity.confidence}</span>
+                                            </div>
                                         </template>
                                     </div>
+                                </template>
+                            </div>
+                            <div class="slds-col">
+                                <h4>Redaction Report</h4>
+                                <template if:true={enhancedRedactionResult.redactionReport}>
+                                    <div class="report-details">
+                                        <p><strong>Total Entities:</strong> {enhancedRedactionResult.redactionReport.total_entities}</p>
+                                        <p><strong>Confidence Score:</strong> {enhancedRedactionResult.confidenceScore}</p>
+                                        <p><strong>Redaction Level:</strong> {enhancedRedactionResult.redactionLevel}</p>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Deep Learning Results -->
+            <div if:true={showDeepLearning} class={deepLearningClass}>
+                <div class="slds-card slds-m-top_medium">
+                    <div class="slds-card__header">
+                        <h3 class="slds-card__header-title">
+                            <lightning-icon icon-name="utility:brain" size="small" class="slds-m-right_x-small"></lightning-icon>
+                            Deep Learning Results
+                        </h3>
+                    </div>
+                    <div class="slds-card__body">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col">
+                                <h4>ML Predictions</h4>
+                                <template if:true={deepLearningResult.mlPredictions}>
+                                    <div class="prediction-list">
+                                        <template for:each={deepLearningResult.mlPredictions} for:item="prediction">
+                                            <div key={prediction.text} class="prediction-item">
+                                                <span class="prediction-text">{prediction.text}</span>
+                                                <span class="prediction-type">{prediction.type}</span>
+                                                <span class="prediction-model">{prediction.model}</span>
+                                                <span class="prediction-confidence">{prediction.confidence}</span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                            <div class="slds-col">
+                                <h4>Ensemble Results</h4>
+                                <template if:true={deepLearningResult.ensembleEntities}>
+                                    <div class="ensemble-list">
+                                        <template for:each={deepLearningResult.ensembleEntities} for:item="entity">
+                                            <div key={entity.text} class="ensemble-item">
+                                                <span class="ensemble-text">{entity.text}</span>
+                                                <span class="ensemble-type">{entity.type}</span>
+                                                <span class="ensemble-votes">{entity.voteCount}/{entity.totalModels}</span>
+                                                <span class="ensemble-confidence">{entity.confidence}</span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- Accuracy Metrics -->
+                        <template if:true={deepLearningResult.accuracyMetrics}>
+                            <div class="accuracy-metrics slds-m-top_medium">
+                                <h4>Accuracy Metrics</h4>
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col">
+                                        <p><strong>Total Entities:</strong> {deepLearningResult.accuracyMetrics.total_entities}</p>
+                                        <p><strong>High Confidence:</strong> {deepLearningResult.accuracyMetrics.high_confidence_count}</p>
+                                    </div>
+                                    <div class="slds-col">
+                                        <p><strong>Multi-Model Agreement:</strong> {deepLearningResult.accuracyMetrics.multi_model_agreement}</p>
+                                        <p><strong>Average Confidence:</strong> {deepLearningResult.accuracyMetrics.average_confidence}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI Analysis Results -->
+            <div if:true={showAIAnalysis} class={analysisClass}>
+                <div class="slds-card slds-m-top_medium">
+                    <div class="slds-card__header">
+                        <h3 class="slds-card__header-title">
+                            <lightning-icon icon-name="utility:insights" size="small" class="slds-m-right_x-small"></lightning-icon>
+                            AI Analysis Results
+                        </h3>
+                    </div>
+                    <div class="slds-card__body">
+                        <template if:true={analysisResult.aiInsights}>
+                            <div class="ai-insights">
+                                <template for:each={analysisResult.aiInsights} for:item="insight" for:key="key">
+                                    <div key={key} class="insight-item">
+                                        <strong>{key}:</strong> {insight}
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Model Configuration Results -->
+            <div if:true={showModelConfig} class={modelConfigClass}>
+                <div class="slds-card slds-m-top_medium">
+                    <div class="slds-card__header">
+                        <h3 class="slds-card__header-title">
+                            <lightning-icon icon-name="utility:settings" size="small" class="slds-m-right_x-small"></lightning-icon>
+                            Optimal Model Configuration
+                        </h3>
+                    </div>
+                    <div class="slds-card__body">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col">
+                                <h4>Recommended Models</h4>
+                                <template if:true={modelConfiguration.recommendedModels}>
+                                    <div class="model-list">
+                                        <template for:each={modelConfiguration.recommendedModels} for:item="model">
+                                            <div key={model} class="model-item">
+                                                <lightning-icon icon-name="utility:check" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                                {model}
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                            <div class="slds-col">
+                                <h4>Performance Estimates</h4>
+                                <div class="performance-estimates">
+                                    <p><strong>Processing Time:</strong> {modelConfiguration.estimatedProcessingTime} seconds</p>
+                                    <p><strong>Estimated Cost:</strong> ${modelConfiguration.estimatedCost}</p>
+                                    <p><strong>Confidence Threshold:</strong> {modelConfiguration.confidenceThreshold}</p>
+                                    <p><strong>Ensemble Strategy:</strong> {modelConfiguration.ensembleStrategy}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Processing Metrics -->
+            <div if:true={processingMetrics.processingTime} class="metrics-section slds-m-top_medium">
+                <div class="slds-card">
+                    <div class="slds-card__header">
+                        <h3 class="slds-card__header-title">
+                            <lightning-icon icon-name="utility:metrics" size="small" class="slds-m-right_x-small"></lightning-icon>
+                            Processing Metrics
+                        </h3>
+                    </div>
+                    <div class="slds-card__body">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col">
+                                <p><strong>Model Used:</strong> {processingMetrics.modelUsed}</p>
+                                <p><strong>Processing Time:</strong> {processingMetrics.processingTime} seconds</p>
+                            </div>
+                            <div class="slds-col">
+                                <p><strong>Text Length:</strong> {originalText.length} characters</p>
+                                <p><strong>Confidence Score:</strong> {processingMetrics.confidenceScore}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sample Data Section -->
+            <div class={sampleClass}>
+                <div class="slds-card slds-m-top_medium">
+                    <div class="slds-card__header">
+                        <h3 class="slds-card__header-title">
+                            <lightning-icon icon-name="utility:knowledge_base" size="small" class="slds-m-right_x-small"></lightning-icon>
+                            Sample Transcripts
+                        </h3>
+                        <div class="slds-card__header-actions">
+                            <lightning-button 
+                                label="Toggle Samples" 
+                                variant="neutral" 
+                                onclick={handleToggleSamples}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                    <div class="slds-card__body">
+                        <div class="sample-list">
+                            <template for:each={sampleTranscripts} for:item="sample" for:index="index">
+                                <div key={sample.name} class="sample-item">
+                                    <lightning-button 
+                                        label={sample.name} 
+                                        variant="neutral" 
+                                        data-index={index}
+                                        onclick={handleLoadSample}>
+                                    </lightning-button>
                                 </div>
                             </template>
                         </div>
-                    </template>
-                </div>
-                
-                <!-- Analysis Metadata -->
-                <div class="analysis-metadata">
-                    <div class="metadata-item">
-                        <strong>Analysis Type:</strong> {analysisResult.analysisType}
-                    </div>
-                    <div class="metadata-item">
-                        <strong>Timestamp:</strong> {analysisResult.timestamp}
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Footer Section -->
-        <div class="footer-section">
-            <div class="redaction-types">
-                <h4>Redaction Types:</h4>
-                <ul class="redaction-list">
-                    <li><strong>Emails:</strong> user@domain.com → [REDACTED EMAIL]</li>
-                    <li><strong>Phone Numbers:</strong> (555) 123-4567 → [REDACTED PHONE]</li>
-                    <li><strong>Credit Cards:</strong> 1234-5678-9012-3456 → [REDACTED CARD]</li>
-                </ul>
             </div>
             
-            <div class="ai-analysis-types">
-                <h4>AI Analysis Types:</h4>
-                <ul class="analysis-list">
-                    <li><strong>Summary:</strong> Concise overview of the call</li>
-                    <li><strong>Sentiment:</strong> Customer sentiment analysis</li>
-                    <li><strong>Coaching:</strong> Agent performance tips</li>
-                    <li><strong>Next Steps:</strong> Action items and follow-ups</li>
-                </ul>
-            </div>
         </div>
-    </div>
+    </lightning-card>
 </template> 

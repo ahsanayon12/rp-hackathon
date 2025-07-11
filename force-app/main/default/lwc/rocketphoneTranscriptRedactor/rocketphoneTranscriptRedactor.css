@@ -1,0 +1,407 @@
+/* Rocketphone AI Transcript Redactor Styles */
+
+/* Call Information */
+.call-info {
+    background: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid #0070d2;
+}
+
+/* Input Section */
+.input-section {
+    margin-bottom: 1rem;
+}
+
+.transcript-input {
+    width: 100%;
+    min-height: 200px;
+}
+
+/* Configuration Section */
+.config-section {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+}
+
+.config-section lightning-combobox {
+    margin-bottom: 0.5rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.action-buttons lightning-button {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Loading Section */
+.loading-section {
+    text-align: center;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
+
+/* Error Message */
+.error-message {
+    background: #fef7f7;
+    border: 1px solid #c23934;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    color: #c23934;
+    display: flex;
+    align-items: center;
+}
+
+/* Latest Results */
+.latest-results {
+    margin-top: 1rem;
+}
+
+.redacted-text-section {
+    margin-top: 1rem;
+}
+
+.redacted-text {
+    background: #f8f9fa;
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Model Configuration Section */
+.model-config-section {
+    margin-top: 1rem;
+}
+
+.model-config-section.hidden {
+    display: none;
+}
+
+.model-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.model-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid #e1e1e1;
+    background: #f8f9fa;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.performance-estimates p {
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0;
+}
+
+/* Processing Statistics */
+.stats-section {
+    margin-top: 1rem;
+}
+
+.stats-section.hidden {
+    display: none;
+}
+
+/* Transcripts Section */
+.transcripts-section {
+    margin-top: 1rem;
+}
+
+.transcripts-section.hidden {
+    display: none;
+}
+
+.transcript-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.transcript-item {
+    border: 1px solid #d8dde6;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: #ffffff;
+}
+
+.transcript-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.transcript-name {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.transcript-status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.transcript-status.Completed {
+    background: #28a745;
+    color: white;
+}
+
+.transcript-status.Processing {
+    background: #ffc107;
+    color: #212529;
+}
+
+.transcript-status.Failed {
+    background: #dc3545;
+    color: white;
+}
+
+.transcript-status.Pending {
+    background: #6c757d;
+    color: white;
+}
+
+.transcript-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.transcript-details span {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.transcript-error {
+    background: #fef7f7;
+    border: 1px solid #f4b6b6;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    color: #c23934;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/* Card Enhancements */
+.slds-card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d8dde6;
+    transition: box-shadow 0.2s ease;
+}
+
+.slds-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.slds-card__header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #d8dde6;
+}
+
+.slds-card__header-title {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* Button Enhancements */
+lightning-button[variant="success"] {
+    --slds-c-button-brand-color-background: #28a745;
+    --slds-c-button-brand-color-border: #28a745;
+}
+
+lightning-button[variant="destructive"] {
+    --slds-c-button-brand-color-background: #dc3545;
+    --slds-c-button-brand-color-border: #dc3545;
+}
+
+lightning-button[variant="neutral"] {
+    --slds-c-button-neutral-color-background: #6c757d;
+    --slds-c-button-neutral-color-border: #6c757d;
+}
+
+/* Loading Animation */
+.loading-section lightning-spinner {
+    margin-bottom: 1rem;
+}
+
+/* Scrollbar Styling */
+.transcript-list::-webkit-scrollbar,
+.model-list::-webkit-scrollbar,
+.redacted-text::-webkit-scrollbar {
+    width: 8px;
+}
+
+.transcript-list::-webkit-scrollbar-track,
+.model-list::-webkit-scrollbar-track,
+.redacted-text::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.transcript-list::-webkit-scrollbar-thumb,
+.model-list::-webkit-scrollbar-thumb,
+.redacted-text::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.transcript-list::-webkit-scrollbar-thumb:hover,
+.model-list::-webkit-scrollbar-thumb:hover,
+.redacted-text::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Animation for new sections */
+.latest-results,
+.model-config-section,
+.stats-section,
+.transcripts-section {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Status indicators */
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.status-success {
+    background-color: #28a745;
+}
+
+.status-warning {
+    background-color: #ffc107;
+}
+
+.status-error {
+    background-color: #dc3545;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-buttons lightning-button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .config-section .slds-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .transcript-details {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .transcript-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+/* Tooltip styles */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Grid improvements for better layout */
+.slds-grid.slds-gutters {
+    margin: 0;
+}
+
+.slds-col {
+    padding: 0 0.5rem;
+}
+
+/* Enhanced spacing */
+.slds-m-top_medium {
+    margin-top: 1rem;
+}
+
+.slds-m-bottom_medium {
+    margin-bottom: 1rem;
+}
+
+.slds-m-right_x-small {
+    margin-right: 0.25rem;
+}
+
+/* Text improvements */
+.slds-text-heading_small {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Icon styling */
+lightning-icon {
+    --sds-c-icon-color-foreground-default: #0070d2;
+} 
